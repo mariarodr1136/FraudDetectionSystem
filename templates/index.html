@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Fraud Detection</title>
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 50px 20px 20px; 
+        padding: 30px;
+        background-color: #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #340d56;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+
+        h2 {
+            color: #340d56;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .classification-report, .confusion-matrix {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #340d56;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .img-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        iframe {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Credit Card Fraud Detection</h1>
+
+        <div class="classification-report">
+            <h2>Classification Report</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Legitimate</td>
+                        <td>{{ classification_report['0']['precision'] }}</td>
+                        <td>{{ classification_report['0']['recall'] }}</td>
+                        <td>{{ classification_report['0']['f1-score'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Fraudulent</td>
+                        <td>{{ classification_report['1']['precision'] }}</td>
+                        <td>{{ classification_report['1']['recall'] }}</td>
+                        <td>{{ classification_report['1']['f1-score'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="confusion-matrix">
+            <h2>Confusion Matrix</h2>
+            <div class="img-container">
+                <iframe src="{{ cm_plot_path }}" width="100%" height="600px"></iframe>
+            </div>
+        </div>        
+    </div>
+</body>
+</html>
