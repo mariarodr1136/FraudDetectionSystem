@@ -2,7 +2,7 @@
 
 FraudWatch is an advanced credit card fraud detection system designed to identify fraudulent transactions in real-time using machine learning techniques. Built with **Python** and **Flask**, the system processes transaction data to predict fraud using a **Random Forest classifier**, a powerful ensemble learning algorithm known for its high accuracy in classification tasks. The backend leverages **scikit-learn** for model training and evaluation, while the web application, built with **Flask**, serves as an interactive platform for users to engage with the results.
 
-FraudWatch incorporates robust data preprocessing steps such as feature scaling using **StandardScaler** to ensure optimal model performance. For visualization, the system employs **Plotly**, a data visualization library that creates an interactive confusion matrix heatmap, allowing users to explore how well the model classifies legitimate and fraudulent transactions. The heatmap enhances user experience by offering an intuitive, interactive view of model accuracy, with hoverable cells displaying detailed counts of true positives, false positives, true negatives, and false negatives.
+FraudWatch incorporates robust data preprocessing steps such as feature scaling using **StandardScaler** to ensure optimal model performance. For visualization, the system employs **Plotly**, a data visualization library that creates an interactive chart for the model's performance metrics, allowing users to explore how well the model classifies legitimate and fraudulent transactions. The chart enhances user experience by offering an intuitive, interactive view of model accuracy, false positives, false negatives, true positives, and true negatives.
 
 ![Python](https://img.shields.io/badge/Python-Programming%20Language-blue)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-lightgreen)
@@ -10,8 +10,12 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-blue)
 ![Plotly](https://img.shields.io/badge/Plotly-Data%20Visualization-brightgreen)
 
+---
+<img width="1305" alt="Screenshot 2025-01-07 at 6 41 12 PM" src="https://github.com/user-attachments/assets/acdbf0cc-adff-498c-beed-1ddc857b5584" />
+
+---
+
 ## Table of Contents
-- [Project Overview](#project-overview)
 - [Technologies Used](#technologies-used)
 - [Features](#features)
 - [Installation](#installation)
@@ -27,7 +31,11 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 - **Flask**: Web framework for creating the web application and serving the results.
 - **Pandas**: Data manipulation and analysis library used for loading and preparing the dataset.
 - **scikit-learn**: Machine learning library used for building and evaluating the Random Forest model.
-- **Plotly**: Data visualization library for generating the interactive confusion matrix heatmap.
+- **Plotly**: Data visualization library for generating interactive charts for model performance metrics.
+
+---
+
+<img width="1308" alt="Screenshot 2025-01-07 at 6 41 21 PM" src="https://github.com/user-attachments/assets/436839fe-3dbd-4236-9107-2b8ba23cfaa1" />
 
 ---
 
@@ -35,8 +43,13 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 - **Fraud Detection**: The system predicts whether a credit card transaction is fraudulent or legitimate using a Random Forest classifier.
 - **Feature Scaling**: Data is preprocessed with **StandardScaler** to normalize the features.
 - **Classification Report**: Detailed classification report with precision, recall, and F1-score for both classes (legitimate and fraudulent transactions).
-- **Confusion Matrix Heatmap**: Visualizes the performance of the model through an interactive heatmap using Plotly.
+- **Model Performance Metrics Chart**: Visualizes the performance of the model through an interactive line chart for accuracy, false positives, false negatives, true positives, and true negatives using Plotly.
+- **Sample Transaction Table**: Displays a table with a few sample transactions, showing their true class and predicted class, with color-coded indicators for correct or incorrect predictions.
 - **User-friendly Web Application**: The system is packaged in a Flask web application to display results in an accessible and interactive format.
+
+---
+
+<img width="1286" alt="Screenshot 2025-01-07 at 6 43 08 PM" src="https://github.com/user-attachments/assets/58ed2189-b2d7-4e6e-9b84-479bc526799c" />
 
 ---
 
@@ -77,8 +90,9 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 
 Once the application is running, you can access the following features:
 
-- **Classification Report**: View the precision, recall, and F1-score for both classes (legitimate and fraudulent).
-- **Interactive Confusion Matrix Heatmap**: See the confusion matrix visualized as an interactive heatmap, where you can hover over the cells to get the counts.
+1. **Classification Report**: View the precision, recall, and F1-score for both classes (legitimate and fraudulent).
+2. **Interactive Model Metrics Line Chart**: See the model performance metrics (accuracy, false positives, false negatives, true positives, and true negatives) visualized interactively in a line chart, where you can hover over the points for detailed values.
+3. **Sample Transactions Table**: View the first few sample transactions, with true and predicted classes, color-coded to indicate correct or incorrect predictions.
 
 ---
 
@@ -93,9 +107,19 @@ Once the application is running, you can access the following features:
 
 ---
 
-### Confusion Matrix Heatmap
+### Model Performance Metrics Line Chart
 
-The confusion matrix is displayed interactively in the application. You can see how well the model is classifying legitimate and fraudulent transactions.
+The line chart visualizes the model's performance metrics, such as accuracy, false positives, false negatives, true positives, and true negatives.
+
+---
+
+### Sample Transactions Table
+
+| Transaction (V1, V2, V3, V4)           | True Class | Prediction  |
+|----------------------------------------|------------|-------------|
+| -0.1348, 0.5127, -0.1256, -0.3432      | Legitimate | Fraudulent  |
+| -0.0321, 0.3548, -0.2156, -0.2342      | Fraudulent | Fraudulent  |
+| ...                                    | ...        | ...         |
 
 ---
 
