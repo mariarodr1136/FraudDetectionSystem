@@ -4,51 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credit Card Fraud Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.16.0/plotly.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f9;
-        color: #333;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        height: 100vh;
-    }
-
-    .container {
-        width: 90%;
-        max-width: 1200px;
-        margin: 50px 20px 20px; 
-        padding: 30px;
-        background-color: #fff;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
-
-    h1 {
-        text-align: center;
-        color: #340d56;
-        font-size: 2.5em;
-        margin-bottom: 20px;
-    }
-
-
-        h2 {
-            color: #340d56;
-            font-size: 1.8em;
-            margin-bottom: 15px;
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
         }
 
-        .classification-report, .confusion-matrix {
+        .header {
+            width: 100%;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('/static/background.jpg');
+        }
+
+        h1 {
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #3e4a89, #6b5b95);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
             margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .metrics-visualization {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .confusion-matrix {
+            flex: 1;
+            margin-left: 20px;
+            overflow-x: auto;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #3e4a89;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-top: 30px;
         }
 
         table, th, td {
@@ -56,85 +92,120 @@
         }
 
         th, td {
-            padding: 15px;
-            text-align: center;
+            padding: 10px;
+            text-align: left;
         }
 
         th {
-            background-color: #340d56;
+            background-color: #3e4a89;
             color: white;
-            font-weight: bold;
         }
 
         td {
             background-color: #f9f9f9;
         }
 
-        .img-container {
-            text-align: center;
-            margin-top: 20px;
+        td.correct {
+            color: green;
+            font-weight: bold;
         }
 
-        iframe {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        td.incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+        .model-summary {
+            width: 100%;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .model-summary h2 {
+            color: #3e4a89;
+        }
+
+        .model-summary ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .model-summary ul li {
+            font-size: 1.1em;
+            margin-bottom: 10px;
         }
 
         @media (max-width: 768px) {
             .container {
-                width: 95%;
-                padding: 15px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .metrics-visualization, .confusion-matrix {
+                margin-right: 0;
+                margin-left: 0;
+                margin-bottom: 30px;
+                width: 100%;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 2.5em;
             }
 
             h2 {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Credit Card Fraud Detection</h1>
 
-        <div class="classification-report">
-            <h2>Classification Report</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Class</th>
-                        <th>Precision</th>
-                        <th>Recall</th>
-                        <th>F1-Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Legitimate</td>
-                        <td>{{ classification_report['0']['precision'] }}</td>
-                        <td>{{ classification_report['0']['recall'] }}</td>
-                        <td>{{ classification_report['0']['f1-score'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Fraudulent</td>
-                        <td>{{ classification_report['1']['precision'] }}</td>
-                        <td>{{ classification_report['1']['recall'] }}</td>
-                        <td>{{ classification_report['1']['f1-score'] }}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="header">
+        <h1>CREDIT CARD FRAUD DETECTION</h1>
+    </div>
+
+    <div class="container">
+        <div class="metrics-visualization">
+            <h2>MODEL PERFORMANCE METRICS</h2>
+            <iframe src="{{ metrics_chart_path }}"></iframe>
         </div>
 
         <div class="confusion-matrix">
-            <h2>Confusion Matrix</h2>
-            <div class="img-container">
-                <iframe src="{{ cm_plot_path }}" width="100%" height="600px"></iframe>
-            </div>
-        </div>        
+            <h2>SAMPLE TRANSACTIONS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction (V1, V2, V3, V4)</th>
+                        <th>True Class</th>
+                        <th>Prediction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in sample_transactions %}
+                    <tr>
+                        <td>{{ transaction['V1'] }}, {{ transaction['V2'] }}, {{ transaction['V3'] }}, {{ transaction['V4'] }}</td>
+                        <td>{{ 'Fraudulent' if transaction['Class'] == 1 else 'Legitimate' }}</td>
+                        <td class="{{ 'correct' if transaction['Class'] == transaction['Prediction'] else 'incorrect' }}">
+                            {{ 'Fraudulent' if transaction['Prediction'] == 1 else 'Legitimate' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <div class="model-summary">
+        <h2>Model Performance Summary</h2>
+        <p>This model has achieved an overall accuracy of {{ accuracy }}%. It performs well in identifying fraudulent transactions but has a small number of false positives. Below is a breakdown of the key performance metrics:</p>
+        <ul>
+            <li><strong>Accuracy:</strong> The percentage of correct predictions (legitimate or fraudulent).</li>
+            <li><strong>False Positives:</strong> Legitimate transactions incorrectly identified as fraudulent.</li>
+            <li><strong>False Negatives:</strong> Fraudulent transactions incorrectly identified as legitimate.</li>
+            <li><strong>True Positives:</strong> Correctly identified fraudulent transactions.</li>
+            <li><strong>True Negatives:</strong> Correctly identified legitimate transactions.</li>
+        </ul>
+    </div>
+
 </body>
 </html>
