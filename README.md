@@ -18,6 +18,8 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
 - [Features](#features)
+- [Dataset](#dataset)
+- [Future Enhancements](#future-enhancements)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Example](#example)
@@ -50,6 +52,25 @@ FraudWatch incorporates robust data preprocessing steps such as feature scaling 
 ---
 
 <img width="1286" alt="Screenshot 2025-01-07 at 6 43 08 PM" src="https://github.com/user-attachments/assets/58ed2189-b2d7-4e6e-9b84-479bc526799c" />
+
+---
+
+## Dataset
+
+The data used in this project is from [Kaggle - Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud?resource=download).
+
+It is important that credit card companies are able to recognize fraudulent credit card transactions to prevent customers from being charged for items they did not purchase.
+
+## Content
+
+The dataset contains transactions made by credit cards in September 2013 by European cardholders. It presents transactions that occurred over two days, with 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, with frauds accounting for 0.172% of all transactions.
+
+The dataset contains only numerical input variables, which are the result of a PCA transformation. Due to confidentiality concerns, the original features are not provided. The features V1, V2, … V28 are the principal components obtained via PCA, with the exception of two features:
+
+- **'Time'**: The seconds elapsed between each transaction and the first transaction in the dataset.
+- **'Amount'**: The transaction amount, which can be useful for cost-sensitive learning based on examples.
+
+The target variable, **'Class'**, indicates whether a transaction is fraudulent (1) or not (0).
 
 ---
 
