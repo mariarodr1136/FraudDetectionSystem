@@ -96,7 +96,7 @@ The target variable, **'Class'**, indicates whether a transaction is fraudulent 
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/mariarodr1136/fraudwatch.git
+   git clone https://github.com/mariarodr1136/FraudDetectionSystem.git
    cd fraudwatch
 2. Install the required dependencies:
    ```bash
