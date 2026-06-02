@@ -30,7 +30,6 @@ Live Application: https://frauddetectionsystem-qcmh.onrender.com/
 - [Model Performance](#model-performance)
 - [API Endpoints](#api-endpoints)
 - [Installation](#installation)
-- [Deployment](#deployment)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Contact](#contact-)
@@ -149,32 +148,6 @@ curl -X POST http://127.0.0.1:5000/predict \
    On first run, the model trains and saves `model.joblib` and `scaler.joblib` (takes ~1–2 minutes). Subsequent starts load the saved files instantly.
 
 5. Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
-
----
-
-## Deployment
-
-The app is configured for one-click deploy to **Render** (free tier). The pre-trained `model.joblib` and `scaler.joblib` are committed to the repo so Render loads them on startup — no retraining needed on cold start.
-
-### Deploy to Render
-
-1. Go to [render.com](https://render.com) and sign in (or create a free account).
-2. Click **New → Web Service** and connect your GitHub account.
-3. Select the `FraudDetectionSystem` repository.
-4. Render will auto-detect the `Procfile`. Verify these settings:
-
-   | Field | Value |
-   |---|---|
-   | Environment | Python 3 |
-   | Build Command | `pip install -r requirements.txt` |
-   | Start Command | `gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120` |
-   | Instance Type | Free |
-
-5. Click **Deploy Web Service**.
-
-The first deploy takes ~3–4 minutes (pip install). Once live, the app starts in a few seconds by loading the saved model files.
-
-> **Free tier note:** Render spins the service down after 15 minutes of inactivity. The next request after a sleep wakes it up in ~30 seconds. This is the main trade-off of the free plan.
 
 ---
 
