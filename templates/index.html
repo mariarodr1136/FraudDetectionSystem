@@ -81,62 +81,58 @@
             padding: 3px 10px;
         }
 
-        /* ── Hero ────────────────────────────────────────────── */
-        .hero {
-            height: 260px;
-            background: #0a0a0a;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);
-        }
-        .hero-content {
-            position: relative;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 0 24px 32px;
-        }
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 10px;
-        }
-        .hero-tag span {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 6px #4ade80;
-        }
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-        .hero p {
-            margin-top: 6px;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.65);
-        }
-
         /* ── Page layout ─────────────────────────────────────── */
         .page {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 36px 24px 60px;
+            padding: 0 24px 60px;
+        }
+
+        /* ── Page header ─────────────────────────────────────── */
+        .page-header {
+            padding: 44px 0 32px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-1);
+            letter-spacing: -0.6px;
+            line-height: 1.15;
+        }
+        .page-subtitle {
+            margin-top: 6px;
+            font-size: 0.875rem;
+            color: var(--text-3);
+        }
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--success);
+            background: var(--success-bg);
+            border: 1px solid #a7f3d0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .live-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(0.8); }
         }
         .section { margin-bottom: 36px; }
         .section-header {
@@ -473,17 +469,20 @@
     </div>
 </nav>
 
-<!-- Hero -->
-<div class="hero">
-    <div class="hero-content">
-        <div class="hero-tag"><span></span> Live Model</div>
-        <h1>Credit Card Fraud Detection</h1>
-        <p>Evaluated on a stratified held-out test set &mdash; not training data</p>
-    </div>
-</div>
-
 <!-- Page content -->
 <div class="page">
+
+    <!-- Page header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Credit Card Fraud Detection</h1>
+            <p class="page-subtitle">Random Forest Classifier &mdash; evaluated on a stratified held-out test set, not training data</p>
+        </div>
+        <div class="live-pill">
+            <div class="live-dot"></div>
+            Live Model
+        </div>
+    </div>
 
     <!-- Metric cards -->
     <div class="section">
