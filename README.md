@@ -18,7 +18,10 @@
 
 ---
 
-<img width="1305" alt="FraudWatch Dashboard" src="https://github.com/user-attachments/assets/acdbf0cc-adff-498c-beed-1ddc857b5584" />
+
+
+https://github.com/user-attachments/assets/6e2b013d-701c-4763-8af7-768f176c8491
+
 
 ---
 
@@ -60,10 +63,6 @@ Evaluated on **56,962 held-out test transactions** (~98 fraud cases):
 | 🌲 | **Feature Importance** | Top 15 PCA components ranked by Random Forest importance score |
 | ⚖️ | **Balanced Sample Table** | 3 fraudulent + 3 legitimate test transactions with true labels, predictions, and fraud probabilities |
 | ⚡ | **Live Prediction API** | Load any random test-set transaction and run the model against it in real time |
-
----
-
-<img width="1308" alt="Model Evaluation Charts" src="https://github.com/user-attachments/assets/436839fe-3dbd-4236-9107-2b8ba23cfaa1" />
 
 ---
 
@@ -143,10 +142,6 @@ curl -X POST https://frauddetectionsystem-qcmh.onrender.com/predict \
   "prediction": 1
 }
 ```
-
----
-
-<img width="1286" alt="Sample Transactions Table" src="https://github.com/user-attachments/assets/58ed2189-b2d7-4e6e-9b84-479bc526799c" />
 
 ---
 
