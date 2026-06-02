@@ -10,7 +10,7 @@
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.24-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
 
-**[🚀 Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
+**[Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
 
 *Hosted on Render's free tier — may take ~30s to wake from sleep*
 
@@ -195,22 +195,22 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
 ## Contributing
 
-Contributions are welcome! To get started:
-
-```bash
-# Fork the repo, then:
-git checkout -b feat/your-feature-name
-
-# After making changes:
-git commit -m 'feat: describe your change'
-git push origin feat/your-feature-name
-# Open a pull request against main
-```
+1. Fork the repo
+2. Create a branch:
+   ```bash
+   git checkout -b feat/my-feature
+   # or
+   git checkout -b fix/issue-###
+   ```
+3. Make changes (for C++ WASM builds, also rebuild & copy updated artifacts)
+4. Commit:
+   ```bash
+   git commit -m "feat: add <short description>"
+   ```
+5. Push & open a Pull Request with context / screenshots if UI related
 
 ---
 
 ## Contact
+If you have any questions or feedback, feel free to reach out at [mrodr.contact@gmail.com](mailto:mrodr.contact@gmail.com).
 
-Maria Rodriguez — [mrodr.contact@gmail.com](mailto:mrodr.contact@gmail.com)
-
-If you find this project useful, consider leaving a ⭐ on [GitHub](https://github.com/mariarodr1136/FraudDetectionSystem)!
