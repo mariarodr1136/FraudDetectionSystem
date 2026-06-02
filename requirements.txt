@@ -1,9 +1,8 @@
 Flask==3.0.3
-Flask-Cors==5.0.0
 scikit-learn==1.6.0
 pandas==2.2.3
 numpy==2.2.1
 joblib==1.4.2
 plotly==5.24.1
 matplotlib==3.10.0
-gunicorn==21.2.0
+gunicorn==26.0.0
