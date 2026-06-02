@@ -3,300 +3,544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credit Card Fraud Detection</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>FraudWatch — Credit Card Fraud Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --accent:       #6366f1;
+            --accent-dark:  #4f46e5;
+            --accent-light: #eef2ff;
+            --success:      #10b981;
+            --success-bg:   #ecfdf5;
+            --danger:       #ef4444;
+            --danger-bg:    #fef2f2;
+            --warning:      #f59e0b;
+            --bg:           #f8fafc;
+            --surface:      #ffffff;
+            --border:       #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-1:       #0f172a;
+            --text-2:       #475569;
+            --text-3:       #94a3b8;
+            --radius:       12px;
+            --shadow-sm:    0 1px 2px rgba(0,0,0,0.05);
+            --shadow:       0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+        }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Montserrat', Arial, sans-serif;
-            background: #f0f2f5;
-            color: #333;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            -webkit-font-smoothing: antialiased;
         }
 
-        .header {
-            width: 100%;
-            height: 60vh;
+        /* ── Navbar ─────────────────────────────────────────── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 52px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-1);
+            letter-spacing: -0.3px;
+        }
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        .nav-pill {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-3);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3px 10px;
+        }
+
+        /* ── Hero ────────────────────────────────────────────── */
+        .hero {
+            height: 260px;
             background-image: url('/static/background.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center 40%;
             position: relative;
+            display: flex;
+            align-items: flex-end;
         }
-        .header::after {
+        .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
+            background: linear-gradient(to bottom, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0.72) 100%);
         }
-        .header-content {
+        .hero-content {
             position: relative;
-            z-index: 1;
-            text-align: center;
-            color: white;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px 32px;
         }
-        .header-content h1 {
-            font-size: 2.5rem;
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 10px;
+        }
+        .hero-tag span {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80;
+        }
+        .hero h1 {
+            font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
-        .header-content p {
-            margin-top: 10px;
-            font-size: 1rem;
-            opacity: 0.85;
+        .hero p {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.65);
         }
 
-        .page-content {
+        /* ── Page layout ─────────────────────────────────────── */
+        .page {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 36px 24px 60px;
         }
-
-        .section { margin-bottom: 40px; }
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #3e4a89;
-            margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #3e4a89;
+        .section { margin-bottom: 36px; }
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .section-header h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+        .section-header .tag {
+            font-size: 0.65rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 2px 7px;
+            border-radius: 4px;
         }
 
-        .metric-cards {
+        /* ── Metric cards ────────────────────────────────────── */
+        .metric-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
+            gap: 14px;
         }
         .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 16px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 18px 18px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
-        .metric-card .value {
-            font-size: 1.9rem;
+        .metric-card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent);
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .metric-card.success::before { background: var(--success); }
+        .metric-card.danger::before  { background: var(--danger); }
+        .metric-card.neutral::before { background: var(--warning); }
+        .metric-value {
+            font-size: 1.75rem;
             font-weight: 700;
-            color: #3e4a89;
+            color: var(--text-1);
+            letter-spacing: -0.5px;
+            line-height: 1;
         }
-        .metric-card .label {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 6px;
+        .metric-card.success .metric-value { color: var(--success); }
+        .metric-card.danger  .metric-value { color: var(--danger); }
+        .metric-label {
+            margin-top: 8px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .metric-card.danger .value { color: #e74c3c; }
-        .metric-card.success .value { color: #27ae60; }
 
+        /* ── Chart cards ─────────────────────────────────────── */
         .charts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 16px;
         }
         .chart-card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px;
             overflow: hidden;
         }
-        .chart-card.full-width { grid-column: 1 / -1; }
+        .chart-card.wide { grid-column: 1 / -1; }
 
-        .table-wrapper {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-            overflow-x: auto;
+        /* ── Table ───────────────────────────────────────────── */
+        .table-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
         }
         table { width: 100%; border-collapse: collapse; }
-        th {
-            background: #3e4a89;
-            color: white;
-            padding: 12px 16px;
+        thead th {
+            background: var(--bg);
+            color: var(--text-3);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 11px 16px;
             text-align: left;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
         }
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.9rem;
+        tbody td {
+            padding: 13px 16px;
+            font-size: 0.875rem;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--border-light);
         }
-        tr:last-child td { border-bottom: none; }
-        tr:nth-child(even) td { background: #fafafa; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr { transition: background 0.12s; }
+        tbody tr:hover td { background: var(--bg); }
 
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
-        .badge-fraud    { background: #fdecea; color: #c0392b; }
-        .badge-legit    { background: #eafaf1; color: #1e8449; }
-        .badge-correct  { background: #eafaf1; color: #1e8449; }
-        .badge-incorrect { background: #fdecea; color: #c0392b; }
+        .pill::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+        }
+        .pill-fraud    { background: var(--danger-bg);  color: #dc2626; }
+        .pill-fraud::before   { background: #dc2626; }
+        .pill-legit    { background: var(--success-bg); color: #059669; }
+        .pill-legit::before   { background: #059669; }
+        .pill-correct  { background: var(--success-bg); color: #059669; }
+        .pill-correct::before { background: #059669; }
+        .pill-wrong    { background: var(--danger-bg);  color: #dc2626; }
+        .pill-wrong::before   { background: #dc2626; }
 
-        .prediction-panel {
-            background: white;
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
-        .prediction-note {
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        .tx-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .tx-feature {
-            background: #f7f8fc;
-            border-radius: 8px;
-            padding: 12px;
-        }
-        .tx-feature .feat-label {
-            font-size: 0.72rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-bottom: 4px;
-        }
-        .tx-feature .feat-value {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #3e4a89;
-        }
-        .btn-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.15s;
-        }
-        .btn:hover { opacity: 0.85; }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-primary   { background: #3e4a89; color: white; }
-        .btn-secondary { background: #6b5b95; color: white; }
-
-        .result-card {
-            border-radius: 10px;
-            padding: 20px 24px;
+        .prob-bar-wrap {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 8px;
+        }
+        .prob-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            max-width: 80px;
+        }
+        .prob-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+            transition: width 0.4s ease;
+        }
+        .prob-bar-fill.high { background: var(--danger); }
+        .prob-text { font-size: 0.8rem; font-weight: 500; color: var(--text-1); white-space: nowrap; }
+
+        /* ── Prediction demo ─────────────────────────────────── */
+        .demo-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .demo-header {
+            padding: 18px 24px 16px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .demo-header-left h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+        .demo-header-left p {
+            margin-top: 2px;
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+        .btn-row { display: flex; gap: 8px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+        }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 1px 2px rgba(99,102,241,0.25);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-dark);
+            box-shadow: 0 4px 10px rgba(99,102,241,0.35);
+            transform: translateY(-1px);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-2);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover:not(:disabled) {
+            background: var(--bg);
+            border-color: var(--text-3);
+        }
+        .demo-body { padding: 20px 24px; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .feature-tile {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        .feature-tile .f-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-3);
+            margin-bottom: 4px;
+        }
+        .feature-tile .f-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-1);
+            font-variant-numeric: tabular-nums;
+        }
+        .demo-empty {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-3);
+            font-size: 0.85rem;
+        }
+        .demo-empty svg { margin-bottom: 10px; opacity: 0.4; }
+        .result-banner {
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .result-banner.fraud { background: var(--danger-bg); border: 1px solid #fecaca; }
+        .result-banner.legit { background: var(--success-bg); border: 1px solid #a7f3d0; }
+        .result-icon { font-size: 1.8rem; line-height: 1; }
+        .result-main { flex: 1; min-width: 0; }
+        .result-verdict {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+        .result-sub {
+            margin-top: 3px;
+            font-size: 0.8rem;
+            color: var(--text-2);
+            display: flex;
+            gap: 16px;
             flex-wrap: wrap;
         }
-        .result-card.fraud { background: #fdecea; border-left: 5px solid #e74c3c; }
-        .result-card.legit { background: #eafaf1; border-left: 5px solid #27ae60; }
-        .result-label { font-size: 1.4rem; font-weight: 700; }
-        .result-card.fraud .result-label { color: #c0392b; }
-        .result-card.legit .result-label { color: #1e8449; }
-        .result-detail { font-size: 0.9rem; color: #555; line-height: 1.8; }
-        .result-detail strong { color: #333; }
+        .result-sub span { font-weight: 500; color: var(--text-1); }
+        .result-check {
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .result-check.ok  { background: var(--success-bg); color: var(--success); }
+        .result-check.err { background: var(--danger-bg);  color: var(--danger); }
 
-        .placeholder {
+        /* ── Loading spinner ─────────────────────────────────── */
+        .spinner {
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Footer ──────────────────────────────────────────── */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
             text-align: center;
-            padding: 30px;
-            color: #aaa;
-            font-size: 0.9rem;
-            border: 2px dashed #ddd;
-            border-radius: 10px;
+            font-size: 0.75rem;
+            color: var(--text-3);
         }
 
-        @media (max-width: 900px) {
-            .metric-cards { grid-template-columns: repeat(3, 1fr); }
-            .charts-grid { grid-template-columns: 1fr; }
-            .chart-card.full-width { grid-column: 1; }
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 960px) {
+            .metric-grid  { grid-template-columns: repeat(3, 1fr); }
+            .charts-grid  { grid-template-columns: 1fr; }
+            .chart-card.wide { grid-column: 1; }
         }
         @media (max-width: 600px) {
-            .metric-cards { grid-template-columns: repeat(2, 1fr); }
-            .header-content h1 { font-size: 1.6rem; }
+            .metric-grid  { grid-template-columns: repeat(2, 1fr); }
+            .hero h1      { font-size: 1.5rem; }
+            .nav-pill     { display: none; }
         }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="header-content">
-        <h1>CREDIT CARD FRAUD DETECTION</h1>
-        <p>Random Forest Classifier &mdash; Evaluated on held-out test set</p>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-brand">
+            <div class="brand-dot"></div>
+            FraudWatch
+        </div>
+        <div class="nav-pill">Random Forest &middot; 284,807 transactions</div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-tag"><span></span> Live Model</div>
+        <h1>Credit Card Fraud Detection</h1>
+        <p>Evaluated on a stratified held-out test set &mdash; not training data</p>
     </div>
 </div>
 
-<div class="page-content">
+<!-- Page content -->
+<div class="page">
 
+    <!-- Metric cards -->
     <div class="section">
-        <div class="section-title">Test Set Performance</div>
-        <div class="metric-cards">
+        <div class="section-header">
+            <h2>Test Set Performance</h2>
+            <span class="tag">56,962 transactions</span>
+        </div>
+        <div class="metric-grid">
             <div class="metric-card success">
-                <div class="value">{{ accuracy }}%</div>
-                <div class="label">Accuracy</div>
+                <div class="metric-value">{{ accuracy }}%</div>
+                <div class="metric-label">Accuracy</div>
             </div>
             <div class="metric-card success">
-                <div class="value">{{ precision }}%</div>
-                <div class="label">Precision</div>
+                <div class="metric-value">{{ precision }}%</div>
+                <div class="metric-label">Precision</div>
+            </div>
+            <div class="metric-card neutral">
+                <div class="metric-value">{{ recall }}%</div>
+                <div class="metric-label">Recall (TPR)</div>
             </div>
             <div class="metric-card">
-                <div class="value">{{ recall }}%</div>
-                <div class="label">Recall (TPR)</div>
-            </div>
-            <div class="metric-card">
-                <div class="value">{{ f1 }}%</div>
-                <div class="label">F1-Score</div>
+                <div class="metric-value">{{ f1 }}%</div>
+                <div class="metric-label">F1-Score</div>
             </div>
             <div class="metric-card danger">
-                <div class="value">{{ fpr }}%</div>
-                <div class="label">False Positive Rate</div>
+                <div class="metric-value">{{ fpr }}%</div>
+                <div class="metric-label">False Positive Rate</div>
             </div>
         </div>
     </div>
 
+    <!-- Charts -->
     <div class="section">
-        <div class="section-title">Model Evaluation</div>
+        <div class="section-header">
+            <h2>Model Evaluation</h2>
+            <span class="tag">Interactive</span>
+        </div>
         <div class="charts-grid">
-            <div class="chart-card">
-                {{ chart_metrics | safe }}
-            </div>
-            <div class="chart-card">
-                {{ chart_conf | safe }}
-            </div>
-            <div class="chart-card full-width">
-                {{ chart_importance | safe }}
-            </div>
+            <div class="chart-card">{{ chart_metrics | safe }}</div>
+            <div class="chart-card">{{ chart_conf | safe }}</div>
+            <div class="chart-card wide">{{ chart_importance | safe }}</div>
         </div>
     </div>
 
+    <!-- Sample transactions -->
     <div class="section">
-        <div class="section-title">Sample Transactions — 3 Fraudulent + 3 Legitimate (Test Set)</div>
-        <div class="table-wrapper">
+        <div class="section-header">
+            <h2>Sample Transactions</h2>
+            <span class="tag">3 fraud &middot; 3 legitimate</span>
+        </div>
+        <div class="table-card">
             <table>
                 <thead>
                     <tr>
-                        <th>Amount ($)</th>
+                        <th>Amount</th>
                         <th>V1</th>
                         <th>V2</th>
                         <th>V3</th>
@@ -309,22 +553,30 @@
                 <tbody>
                     {% for tx in sample_transactions %}
                     <tr>
-                        <td>${{ "%.2f" | format(tx.amount) }}</td>
+                        <td style="font-variant-numeric:tabular-nums;font-weight:500;color:var(--text-1)">${{ "%.2f" | format(tx.amount) }}</td>
                         <td>{{ tx.v1 }}</td>
                         <td>{{ tx.v2 }}</td>
                         <td>{{ tx.v3 }}</td>
                         <td>{{ tx.v4 }}</td>
                         <td>
-                            <span class="badge {{ 'badge-fraud' if tx.true_class == 1 else 'badge-legit' }}">
+                            <span class="pill {{ 'pill-fraud' if tx.true_class == 1 else 'pill-legit' }}">
                                 {{ 'Fraudulent' if tx.true_class == 1 else 'Legitimate' }}
                             </span>
                         </td>
                         <td>
-                            <span class="badge {{ 'badge-correct' if tx.true_class == tx.prediction else 'badge-incorrect' }}">
+                            <span class="pill {{ 'pill-correct' if tx.true_class == tx.prediction else 'pill-wrong' }}">
                                 {{ 'Fraudulent' if tx.prediction == 1 else 'Legitimate' }}
                             </span>
                         </td>
-                        <td>{{ tx.fraud_prob }}%</td>
+                        <td>
+                            <div class="prob-bar-wrap">
+                                <div class="prob-bar">
+                                    <div class="prob-bar-fill {{ 'high' if tx.fraud_prob > 50 else '' }}"
+                                         style="width:{{ tx.fraud_prob }}%"></div>
+                                </div>
+                                <span class="prob-text">{{ tx.fraud_prob }}%</span>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -332,103 +584,139 @@
         </div>
     </div>
 
+    <!-- Live prediction demo -->
     <div class="section">
-        <div class="section-title">Live Prediction Demo</div>
-        <div class="prediction-panel">
-            <p class="prediction-note">
-                Load a random transaction from the held-out test set and run the model against it in real time.
-                V1–V28 are PCA-transformed components; Amount and Time are original values.
-            </p>
-            <div class="tx-features" id="tx-features">
-                <div class="placeholder" style="grid-column: 1 / -1;">
-                    Click "Load Transaction" to begin
+        <div class="section-header">
+            <h2>Live Prediction Demo</h2>
+            <span class="tag">Real-time</span>
+        </div>
+        <div class="demo-card">
+            <div class="demo-header">
+                <div class="demo-header-left">
+                    <h3>Test the model on a random transaction</h3>
+                    <p>V1–V28 are PCA-transformed &middot; Amount and Time are original values</p>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-ghost" id="load-btn" onclick="loadTransaction()">Load Transaction</button>
+                    <button class="btn btn-primary" id="predict-btn" onclick="runPrediction()" disabled>Predict</button>
                 </div>
             </div>
-            <div class="btn-row">
-                <button class="btn btn-secondary" onclick="loadTransaction()">Load Random Transaction</button>
-                <button class="btn btn-primary" id="predict-btn" onclick="runPrediction()" disabled>Predict</button>
+            <div class="demo-body">
+                <div id="feature-area">
+                    <div class="demo-empty">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+                        </svg>
+                        <div>Click <strong>Load Transaction</strong> to pull a random test-set record</div>
+                    </div>
+                </div>
+                <div id="result-area"></div>
             </div>
-            <div id="prediction-result"></div>
         </div>
     </div>
 
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+    FraudWatch &middot; Random Forest Classifier &middot; Kaggle Credit Card Fraud Dataset
+</footer>
+
 <script>
 let currentTx = null;
 
 async function loadTransaction() {
-    const resp = await fetch('/random_transaction');
-    currentTx  = await resp.json();
-    const f    = currentTx.features;
+    const loadBtn = document.getElementById('load-btn');
+    loadBtn.disabled = true;
+    loadBtn.innerHTML = '<div class="spinner" style="border-color:rgba(0,0,0,0.15);border-top-color:#64748b"></div> Loading';
 
-    document.getElementById('tx-features').innerHTML = `
-        <div class="tx-feature">
-            <div class="feat-label">Amount</div>
-            <div class="feat-value">$${f.Amount.toFixed(2)}</div>
-        </div>
-        <div class="tx-feature">
-            <div class="feat-label">V1</div>
-            <div class="feat-value">${f.V1.toFixed(3)}</div>
-        </div>
-        <div class="tx-feature">
-            <div class="feat-label">V2</div>
-            <div class="feat-value">${f.V2.toFixed(3)}</div>
-        </div>
-        <div class="tx-feature">
-            <div class="feat-label">V3</div>
-            <div class="feat-value">${f.V3.toFixed(3)}</div>
-        </div>
-        <div class="tx-feature">
-            <div class="feat-label">V4</div>
-            <div class="feat-value">${f.V4.toFixed(3)}</div>
-        </div>
-        <div class="tx-feature">
-            <div class="feat-label">V14</div>
-            <div class="feat-value">${f.V14.toFixed(3)}</div>
-        </div>
-    `;
-    document.getElementById('prediction-result').innerHTML = '';
-    document.getElementById('predict-btn').disabled = false;
+    try {
+        const resp = await fetch('/random_transaction');
+        currentTx  = await resp.json();
+        const f    = currentTx.features;
+
+        document.getElementById('feature-area').innerHTML = `
+            <div class="feature-grid">
+                <div class="feature-tile">
+                    <div class="f-label">Amount</div>
+                    <div class="f-value">$${f.Amount.toFixed(2)}</div>
+                </div>
+                <div class="feature-tile">
+                    <div class="f-label">V1</div>
+                    <div class="f-value">${f.V1.toFixed(3)}</div>
+                </div>
+                <div class="feature-tile">
+                    <div class="f-label">V2</div>
+                    <div class="f-value">${f.V2.toFixed(3)}</div>
+                </div>
+                <div class="feature-tile">
+                    <div class="f-label">V3</div>
+                    <div class="f-value">${f.V3.toFixed(3)}</div>
+                </div>
+                <div class="feature-tile">
+                    <div class="f-label">V4</div>
+                    <div class="f-value">${f.V4.toFixed(3)}</div>
+                </div>
+                <div class="feature-tile">
+                    <div class="f-label">V14</div>
+                    <div class="f-value">${f.V14.toFixed(3)}</div>
+                </div>
+            </div>
+        `;
+        document.getElementById('result-area').innerHTML = '';
+        document.getElementById('predict-btn').disabled = false;
+    } finally {
+        loadBtn.disabled = false;
+        loadBtn.innerHTML = 'Load Transaction';
+    }
 }
 
 async function runPrediction() {
     if (!currentTx) return;
-    document.getElementById('predict-btn').disabled = true;
 
-    const resp = await fetch('/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentTx.features)
-    });
-    const result = await resp.json();
+    const predictBtn = document.getElementById('predict-btn');
+    predictBtn.disabled = true;
+    predictBtn.innerHTML = '<div class="spinner"></div> Predicting';
 
-    if (result.error) {
-        document.getElementById('prediction-result').innerHTML =
-            `<div class="placeholder" style="color:#e74c3c;">Error: ${result.error}</div>`;
-        return;
+    try {
+        const resp   = await fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentTx.features)
+        });
+        const result = await resp.json();
+
+        if (result.error) {
+            document.getElementById('result-area').innerHTML =
+                `<div style="color:var(--danger);font-size:.85rem;padding:12px 0">Error: ${result.error}</div>`;
+            return;
+        }
+
+        const isFraud   = result.prediction === 1;
+        const isCorrect = result.prediction === currentTx.true_label;
+        const predLabel = isFraud ? 'Fraudulent' : 'Legitimate';
+        const trueLabel = currentTx.true_label === 1 ? 'Fraudulent' : 'Legitimate';
+        const icon      = isFraud ? '🚨' : '✅';
+
+        document.getElementById('result-area').innerHTML = `
+            <div class="result-banner ${isFraud ? 'fraud' : 'legit'}">
+                <div class="result-icon">${icon}</div>
+                <div class="result-main">
+                    <div class="result-verdict">${predLabel}</div>
+                    <div class="result-sub">
+                        <div>Fraud probability: <span>${result.fraud_probability}%</span></div>
+                        <div>True label: <span>${trueLabel}</span></div>
+                    </div>
+                </div>
+                <div class="result-check ${isCorrect ? 'ok' : 'err'}">
+                    ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                </div>
+            </div>
+        `;
+    } finally {
+        predictBtn.disabled = false;
+        predictBtn.innerHTML = 'Predict';
     }
-
-    const predLabel = result.prediction === 1 ? 'Fraudulent' : 'Legitimate';
-    const trueLabel = currentTx.true_label === 1 ? 'Fraudulent' : 'Legitimate';
-    const isCorrect = result.prediction === currentTx.true_label;
-    const cardClass = result.prediction === 1 ? 'fraud' : 'legit';
-    const verdict   = isCorrect
-        ? '<span style="color:#1e8449;font-weight:700;">&#10003; Correct prediction</span>'
-        : '<span style="color:#c0392b;font-weight:700;">&#10007; Incorrect prediction</span>';
-
-    document.getElementById('prediction-result').innerHTML = `
-        <div class="result-card ${cardClass}">
-            <div>
-                <div class="result-label">${predLabel}</div>
-                <div class="result-detail">Fraud probability: <strong>${result.fraud_probability}%</strong></div>
-            </div>
-            <div class="result-detail">
-                True label: <strong>${trueLabel}</strong><br>
-                ${verdict}
-            </div>
-        </div>
-    `;
 }
 </script>
 

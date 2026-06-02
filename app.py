@@ -54,16 +54,19 @@ def _chart(fig, first=False):
 def metrics_chart_html():
     metrics = ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'False Positive Rate']
     values  = [accuracy, precision, recall, f1, fpr]
-    colors  = ['#3e4a89', '#6b5b95', '#4a90e2', '#50c878', '#e74c3c']
+    colors  = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#ef4444']
     fig = go.Figure([go.Bar(
         x=metrics, y=values, marker_color=colors,
-        text=[f'{v:.1f}%' for v in values], textposition='outside'
+        text=[f'{v:.1f}%' for v in values], textposition='outside',
+        marker=dict(color=colors, line=dict(width=0)),
     )])
     fig.update_layout(
-        title='Model Performance Metrics (Test Set)',
-        yaxis=dict(range=[0, 115]),
-        showlegend=False, height=380,
-        plot_bgcolor='white', paper_bgcolor='white', margin=dict(t=50, b=20)
+        title=dict(text='Model Performance Metrics (Test Set)', font=dict(size=14, color='#1e293b')),
+        yaxis=dict(range=[0, 115], gridcolor='#f1f5f9', tickfont=dict(color='#64748b')),
+        xaxis=dict(tickfont=dict(color='#64748b')),
+        showlegend=False, height=360,
+        plot_bgcolor='white', paper_bgcolor='white',
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return _chart(fig, first=True)
 
@@ -73,14 +76,16 @@ def conf_matrix_html():
     fig = go.Figure(go.Heatmap(
         z=[[int(tn), int(fp)], [int(fn), int(tp)]],
         x=labels, y=labels,
-        colorscale='Blues',
+        colorscale=[[0, '#eef2ff'], [1, '#4338ca']],
         text=[[f'TN: {tn:,}', f'FP: {fp:,}'], [f'FN: {fn:,}', f'TP: {tp:,}']],
-        texttemplate='%{text}', textfont={'size': 14}, showscale=False
+        texttemplate='%{text}', textfont={'size': 14, 'color': '#1e293b'}, showscale=False
     ))
     fig.update_layout(
-        title='Confusion Matrix (Test Set)',
-        xaxis_title='Predicted', yaxis_title='Actual',
-        height=380, plot_bgcolor='white', paper_bgcolor='white', margin=dict(t=50, b=20)
+        title=dict(text='Confusion Matrix (Test Set)', font=dict(size=14, color='#1e293b')),
+        xaxis=dict(title='Predicted', tickfont=dict(color='#64748b')),
+        yaxis=dict(title='Actual', tickfont=dict(color='#64748b')),
+        height=360, plot_bgcolor='white', paper_bgcolor='white',
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return _chart(fig)
 
@@ -92,13 +97,20 @@ def feature_importance_html():
     fig = go.Figure([go.Bar(
         x=[importances[i] for i in top],
         y=[names[i] for i in top],
-        orientation='h', marker_color='#3e4a89'
+        orientation='h',
+        marker=dict(
+            color=[importances[i] for i in top],
+            colorscale=[[0, '#c7d2fe'], [1, '#4338ca']],
+            showscale=False,
+            line=dict(width=0)
+        )
     )])
     fig.update_layout(
-        title='Top 15 Feature Importances',
-        xaxis_title='Importance Score',
-        yaxis=dict(autorange='reversed'),
-        height=450, plot_bgcolor='white', paper_bgcolor='white', margin=dict(t=50, b=20)
+        title=dict(text='Top 15 Feature Importances', font=dict(size=14, color='#1e293b')),
+        xaxis=dict(title='Importance Score', gridcolor='#f1f5f9', tickfont=dict(color='#64748b')),
+        yaxis=dict(autorange='reversed', tickfont=dict(color='#64748b')),
+        height=430, plot_bgcolor='white', paper_bgcolor='white',
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return _chart(fig)
 
