@@ -3,14 +3,18 @@
 # FraudWatch 🚨
 ### Real-Time Credit Card Fraud Detection
 
-*Machine learning dashboard that catches fraud with 99.95% accuracy — evaluated on a true held-out test set*
+FraudWatch is a full-stack machine learning application that detects fraudulent credit card transactions with **99.95% accuracy**. It combines a scikit-learn **Random Forest classifier** trained on 284,807 real-world transactions with an interactive Flask dashboard — featuring live predictions, an interactive confusion matrix, and feature importance charts, all evaluated on a proper stratified held-out test set so every metric reflects true generalization.
+
+Built to demonstrate the complete ML workflow: data preprocessing, class-imbalance handling, model persistence, REST API design, and production deployment on Render.
+
+<br>
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.0-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.24-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
 
-**[Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
+**[🚀 Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
 
 *Hosted on Render's free tier — may take ~30s to wake from sleep*
 
@@ -18,22 +22,19 @@
 
 ---
 
-
-
 https://github.com/user-attachments/assets/6e2b013d-701c-4763-8af7-768f176c8491
-
 
 ---
 
 ## Overview
 
-FraudWatch is an end-to-end machine learning application for detecting fraudulent credit card transactions. It trains a **Random Forest classifier** on 284,807 real-world transactions, evaluates it on a stratified held-out test set, and serves an interactive web dashboard with live prediction capabilities.
+FraudWatch covers the full ML lifecycle from raw data to deployed product:
 
-Key design decisions that make the results trustworthy:
-- **Stratified 80/20 train/test split** — all reported metrics reflect true generalization, not training performance
-- **Metrics derived from the confusion matrix** — no misleading shortcuts like training accuracy
-- **`class_weight='balanced'`** — handles the extreme class imbalance (only 0.172% of transactions are fraudulent)
-- **Persisted model artifacts** — `model.joblib` and `scaler.joblib` committed to the repo so the app starts instantly without retraining
+- **Data pipeline** — loads and preprocesses 284,807 transactions, applies `StandardScaler`, and performs a stratified 80/20 train/test split to preserve the rare fraud class (0.172%) in both sets
+- **Model** — Random Forest with 100 estimators and `class_weight='balanced'` to handle extreme class imbalance; trained once and persisted with joblib so the server starts instantly
+- **Honest evaluation** — all metrics (Accuracy, Precision, Recall, F1, FPR) are computed from the confusion matrix on the held-out test set, not training data
+- **Interactive dashboard** — Plotly charts rendered inline, a balanced transaction table, and a live prediction demo backed by a REST API
+- **Production deployment** — served with Gunicorn on Render with the pre-trained model committed to the repo to avoid cold-start retraining
 
 ---
 
