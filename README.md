@@ -1,16 +1,24 @@
 # FraudWatch: Credit Card Fraud Detection System 🚨
 
-FraudWatch is a credit card fraud detection system that identifies fraudulent transactions using machine learning. Built with **Python** and **Flask**, it trains a **Random Forest classifier** on the Kaggle Credit Card Fraud dataset, evaluates it on a held-out test set, and serves an interactive dashboard with real-time prediction capabilities.
-
-The system uses a proper **train/test split** so all reported metrics reflect true generalization — not training performance. The trained model and scaler are **persisted with joblib**, so subsequent server restarts load instantly without retraining. Visualizations are rendered inline via **Plotly** without static HTML files.
-
 ![Python](https://img.shields.io/badge/Python-Programming%20Language-blue)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-lightgreen)
 ![Pandas](https://img.shields.io/badge/Pandas-Data%20Manipulation-orange)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-blue)
 ![Plotly](https://img.shields.io/badge/Plotly-Data%20Visualization-brightgreen)
 
+
+FraudWatch is a credit card fraud detection system that identifies fraudulent transactions using machine learning. Built with **Python** and **Flask**, it trains a **Random Forest classifier** on the Kaggle Credit Card Fraud dataset, evaluates it on a held-out test set, and serves an interactive dashboard with real-time prediction capabilities.
+
+The system uses a proper **train/test split** so all reported metrics reflect true generalization — not training performance. The trained model and scaler are **persisted with joblib**, so subsequent server restarts load instantly without retraining. Visualizations are rendered inline via **Plotly** without static HTML files.
+
 ---
+
+Live Application: [https://genai-technical-interviewer-1.onrender.com/](https://frauddetectionsystem-qcmh.onrender.com/)
+
+*Note: The live application is hosted on Render's free tier, so the backend may take up to a minute to wake up after a period of inactivity.*
+
+---
+
 <img width="1305" alt="Screenshot 2025-01-07 at 6 41 12 PM" src="https://github.com/user-attachments/assets/acdbf0cc-adff-498c-beed-1ddc857b5584" />
 
 ---
