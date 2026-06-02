@@ -1,6 +1,6 @@
 <div align="center">
 
-# FraudWatch 🚨
+# FraudWatch 
 ### Real-Time Credit Card Fraud Detection
 
 FraudWatch is a full-stack machine learning application that detects fraudulent credit card transactions with **99.95% accuracy**. It combines a scikit-learn **Random Forest classifier** trained on 284,807 real-world transactions with an interactive Flask dashboard — featuring live predictions, an interactive confusion matrix, and feature importance charts, all evaluated on a proper stratified held-out test set so every metric reflects true generalization.
@@ -14,7 +14,7 @@ Built to demonstrate the complete ML workflow: data preprocessing, class-imbalan
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![Plotly](https://img.shields.io/badge/Plotly-5.24-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
 
-**[🚀 Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
+**[Live Demo](https://frauddetectionsystem-qcmh.onrender.com/)**
 
 *Hosted on Render's free tier — may take ~30s to wake from sleep*
 
