@@ -22,7 +22,10 @@ Built to demonstrate the complete ML workflow: data preprocessing, class-imbalan
 
 ---
 
-https://github.com/user-attachments/assets/6e2b013d-701c-4763-8af7-768f176c8491
+
+
+https://github.com/user-attachments/assets/f47355f8-5fc8-4263-bf0f-65a650807e83
+
 
 ---
 
