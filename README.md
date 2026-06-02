@@ -13,7 +13,7 @@ The system uses a proper **train/test split** so all reported metrics reflect tr
 
 ---
 
-Live Application: [https://genai-technical-interviewer-1.onrender.com/](https://frauddetectionsystem-qcmh.onrender.com/)
+Live Application: https://frauddetectionsystem-qcmh.onrender.com/
 
 *Note: The live application is hosted on Render's free tier, so the backend may take up to a minute to wake up after a period of inactivity.*
 
