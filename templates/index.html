@@ -4,190 +4,327 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credit Card Fraud Detection</title>
-    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.16.0/plotly.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #f0f2f5;
+            color: #333;
         }
 
         .header {
             width: 100%;
-            height: 70vh;
+            height: 60vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-image: url('/static/background.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
-
-        h1 {
-            color: #ffffff;
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 30px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, #3e4a89, #6b5b95);
-            -webkit-background-clip: text;
-            background-clip: text;
+        .header::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            padding: 10px;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .metrics-visualization {
-            flex: 1;
-            margin-right: 20px;
-        }
-
-        .confusion-matrix {
-            flex: 1;
-            margin-left: 20px;
-            overflow-x: auto;
-        }
-
-        iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #3e4a89;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #3e4a89;
             color: white;
         }
-
-        td {
-            background-color: #f9f9f9;
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .header-content p {
+            margin-top: 10px;
+            font-size: 1rem;
+            opacity: 0.85;
         }
 
-        td.correct {
-            color: green;
-            font-weight: bold;
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        td.incorrect {
-            color: red;
-            font-weight: bold;
+        .section { margin-bottom: 40px; }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3e4a89;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3e4a89;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .model-summary {
-            width: 100%;
-            margin-top: 30px;
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 16px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
         }
-
-        .model-summary h2 {
+        .metric-card .value {
+            font-size: 1.9rem;
+            font-weight: 700;
             color: #3e4a89;
         }
+        .metric-card .label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .metric-card.danger .value { color: #e74c3c; }
+        .metric-card.success .value { color: #27ae60; }
 
-        .model-summary ul {
-            list-style-type: none;
-            padding: 0;
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+        .chart-card.full-width { grid-column: 1 / -1; }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            overflow-x: auto;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: #3e4a89;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) td { background: #fafafa; }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge-fraud    { background: #fdecea; color: #c0392b; }
+        .badge-legit    { background: #eafaf1; color: #1e8449; }
+        .badge-correct  { background: #eafaf1; color: #1e8449; }
+        .badge-incorrect { background: #fdecea; color: #c0392b; }
+
+        .prediction-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+        .prediction-note {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .tx-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .tx-feature {
+            background: #f7f8fc;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .tx-feature .feat-label {
+            font-size: 0.72rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+        }
+        .tx-feature .feat-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3e4a89;
+        }
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-primary   { background: #3e4a89; color: white; }
+        .btn-secondary { background: #6b5b95; color: white; }
+
+        .result-card {
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .result-card.fraud { background: #fdecea; border-left: 5px solid #e74c3c; }
+        .result-card.legit { background: #eafaf1; border-left: 5px solid #27ae60; }
+        .result-label { font-size: 1.4rem; font-weight: 700; }
+        .result-card.fraud .result-label { color: #c0392b; }
+        .result-card.legit .result-label { color: #1e8449; }
+        .result-detail { font-size: 0.9rem; color: #555; line-height: 1.8; }
+        .result-detail strong { color: #333; }
+
+        .placeholder {
+            text-align: center;
+            padding: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
         }
 
-        .model-summary ul li {
-            font-size: 1.1em;
-            margin-bottom: 10px;
+        @media (max-width: 900px) {
+            .metric-cards { grid-template-columns: repeat(3, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
+            .chart-card.full-width { grid-column: 1; }
         }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .metrics-visualization, .confusion-matrix {
-                margin-right: 0;
-                margin-left: 0;
-                margin-bottom: 30px;
-                width: 100%;
-            }
-
-            h1 {
-                font-size: 2.5em;
-            }
-
-            h2 {
-                font-size: 1.6em;
-            }
+        @media (max-width: 600px) {
+            .metric-cards { grid-template-columns: repeat(2, 1fr); }
+            .header-content h1 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
+<div class="header">
+    <div class="header-content">
         <h1>CREDIT CARD FRAUD DETECTION</h1>
+        <p>Random Forest Classifier &mdash; Evaluated on held-out test set</p>
+    </div>
+</div>
+
+<div class="page-content">
+
+    <div class="section">
+        <div class="section-title">Test Set Performance</div>
+        <div class="metric-cards">
+            <div class="metric-card success">
+                <div class="value">{{ accuracy }}%</div>
+                <div class="label">Accuracy</div>
+            </div>
+            <div class="metric-card success">
+                <div class="value">{{ precision }}%</div>
+                <div class="label">Precision</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">{{ recall }}%</div>
+                <div class="label">Recall (TPR)</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">{{ f1 }}%</div>
+                <div class="label">F1-Score</div>
+            </div>
+            <div class="metric-card danger">
+                <div class="value">{{ fpr }}%</div>
+                <div class="label">False Positive Rate</div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="metrics-visualization">
-            <h2>MODEL PERFORMANCE METRICS</h2>
-            <iframe src="{{ metrics_chart_path }}"></iframe>
+    <div class="section">
+        <div class="section-title">Model Evaluation</div>
+        <div class="charts-grid">
+            <div class="chart-card">
+                {{ chart_metrics | safe }}
+            </div>
+            <div class="chart-card">
+                {{ chart_conf | safe }}
+            </div>
+            <div class="chart-card full-width">
+                {{ chart_importance | safe }}
+            </div>
         </div>
+    </div>
 
-        <div class="confusion-matrix">
-            <h2>SAMPLE TRANSACTIONS</h2>
+    <div class="section">
+        <div class="section-title">Sample Transactions — 3 Fraudulent + 3 Legitimate (Test Set)</div>
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Transaction (V1, V2, V3, V4)</th>
-                        <th>True Class</th>
+                        <th>Amount ($)</th>
+                        <th>V1</th>
+                        <th>V2</th>
+                        <th>V3</th>
+                        <th>V4</th>
+                        <th>True Label</th>
                         <th>Prediction</th>
+                        <th>Fraud Probability</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for transaction in sample_transactions %}
+                    {% for tx in sample_transactions %}
                     <tr>
-                        <td>{{ transaction['V1'] }}, {{ transaction['V2'] }}, {{ transaction['V3'] }}, {{ transaction['V4'] }}</td>
-                        <td>{{ 'Fraudulent' if transaction['Class'] == 1 else 'Legitimate' }}</td>
-                        <td class="{{ 'correct' if transaction['Class'] == transaction['Prediction'] else 'incorrect' }}">
-                            {{ 'Fraudulent' if transaction['Prediction'] == 1 else 'Legitimate' }}
+                        <td>${{ "%.2f" | format(tx.amount) }}</td>
+                        <td>{{ tx.v1 }}</td>
+                        <td>{{ tx.v2 }}</td>
+                        <td>{{ tx.v3 }}</td>
+                        <td>{{ tx.v4 }}</td>
+                        <td>
+                            <span class="badge {{ 'badge-fraud' if tx.true_class == 1 else 'badge-legit' }}">
+                                {{ 'Fraudulent' if tx.true_class == 1 else 'Legitimate' }}
+                            </span>
                         </td>
+                        <td>
+                            <span class="badge {{ 'badge-correct' if tx.true_class == tx.prediction else 'badge-incorrect' }}">
+                                {{ 'Fraudulent' if tx.prediction == 1 else 'Legitimate' }}
+                            </span>
+                        </td>
+                        <td>{{ tx.fraud_prob }}%</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -195,17 +332,105 @@
         </div>
     </div>
 
-    <div class="model-summary">
-        <h2>Model Performance Summary</h2>
-        <p>This model has achieved an overall accuracy of {{ accuracy }}%. It performs well in identifying fraudulent transactions but has a small number of false positives. Below is a breakdown of the key performance metrics:</p>
-        <ul>
-            <li><strong>Accuracy:</strong> The percentage of correct predictions (legitimate or fraudulent).</li>
-            <li><strong>False Positives:</strong> Legitimate transactions incorrectly identified as fraudulent.</li>
-            <li><strong>False Negatives:</strong> Fraudulent transactions incorrectly identified as legitimate.</li>
-            <li><strong>True Positives:</strong> Correctly identified fraudulent transactions.</li>
-            <li><strong>True Negatives:</strong> Correctly identified legitimate transactions.</li>
-        </ul>
+    <div class="section">
+        <div class="section-title">Live Prediction Demo</div>
+        <div class="prediction-panel">
+            <p class="prediction-note">
+                Load a random transaction from the held-out test set and run the model against it in real time.
+                V1–V28 are PCA-transformed components; Amount and Time are original values.
+            </p>
+            <div class="tx-features" id="tx-features">
+                <div class="placeholder" style="grid-column: 1 / -1;">
+                    Click "Load Transaction" to begin
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="loadTransaction()">Load Random Transaction</button>
+                <button class="btn btn-primary" id="predict-btn" onclick="runPrediction()" disabled>Predict</button>
+            </div>
+            <div id="prediction-result"></div>
+        </div>
     </div>
+
+</div>
+
+<script>
+let currentTx = null;
+
+async function loadTransaction() {
+    const resp = await fetch('/random_transaction');
+    currentTx  = await resp.json();
+    const f    = currentTx.features;
+
+    document.getElementById('tx-features').innerHTML = `
+        <div class="tx-feature">
+            <div class="feat-label">Amount</div>
+            <div class="feat-value">$${f.Amount.toFixed(2)}</div>
+        </div>
+        <div class="tx-feature">
+            <div class="feat-label">V1</div>
+            <div class="feat-value">${f.V1.toFixed(3)}</div>
+        </div>
+        <div class="tx-feature">
+            <div class="feat-label">V2</div>
+            <div class="feat-value">${f.V2.toFixed(3)}</div>
+        </div>
+        <div class="tx-feature">
+            <div class="feat-label">V3</div>
+            <div class="feat-value">${f.V3.toFixed(3)}</div>
+        </div>
+        <div class="tx-feature">
+            <div class="feat-label">V4</div>
+            <div class="feat-value">${f.V4.toFixed(3)}</div>
+        </div>
+        <div class="tx-feature">
+            <div class="feat-label">V14</div>
+            <div class="feat-value">${f.V14.toFixed(3)}</div>
+        </div>
+    `;
+    document.getElementById('prediction-result').innerHTML = '';
+    document.getElementById('predict-btn').disabled = false;
+}
+
+async function runPrediction() {
+    if (!currentTx) return;
+    document.getElementById('predict-btn').disabled = true;
+
+    const resp = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentTx.features)
+    });
+    const result = await resp.json();
+
+    if (result.error) {
+        document.getElementById('prediction-result').innerHTML =
+            `<div class="placeholder" style="color:#e74c3c;">Error: ${result.error}</div>`;
+        return;
+    }
+
+    const predLabel = result.prediction === 1 ? 'Fraudulent' : 'Legitimate';
+    const trueLabel = currentTx.true_label === 1 ? 'Fraudulent' : 'Legitimate';
+    const isCorrect = result.prediction === currentTx.true_label;
+    const cardClass = result.prediction === 1 ? 'fraud' : 'legit';
+    const verdict   = isCorrect
+        ? '<span style="color:#1e8449;font-weight:700;">&#10003; Correct prediction</span>'
+        : '<span style="color:#c0392b;font-weight:700;">&#10007; Incorrect prediction</span>';
+
+    document.getElementById('prediction-result').innerHTML = `
+        <div class="result-card ${cardClass}">
+            <div>
+                <div class="result-label">${predLabel}</div>
+                <div class="result-detail">Fraud probability: <strong>${result.fraud_probability}%</strong></div>
+            </div>
+            <div class="result-detail">
+                True label: <strong>${trueLabel}</strong><br>
+                ${verdict}
+            </div>
+        </div>
+    `;
+}
+</script>
 
 </body>
 </html>
