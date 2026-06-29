@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudWatch — Credit Card Fraud Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --violet:    #6366f1;
+            --violet-d:  #4f46e5;
+            --violet-l:  #818cf8;
+            --emerald:   #059669;
+            --emerald-bg:#ecfdf5;
+            --emerald-border:#6ee7b7;
+            --text-1:    #0f172a;
+            --text-2:    #475569;
+            --text-3:    #94a3b8;
+            --border:    #e2e8f0;
+            --bg:        #f8fafc;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--emerald);
+            background: var(--emerald-bg);
+            border: 1px solid var(--emerald-border);
+            border-radius: 20px;
+            padding: 5px 13px;
+            margin-bottom: 10px;
+        }
+        .pulse-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse-anim 2s ease-in-out infinite;
+        }
+        @keyframes pulse-anim {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        /* ── Hero ────────────────────────────────────────────────── */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px 28px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle radial glow behind content */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(ellipse at center, rgba(99,102,241,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 20px;
+            padding: 5px 16px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--violet);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+        .eyebrow-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--violet);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.06;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+            max-width: 760px;
+        }
+        .hero-title .accent {
+            background: linear-gradient(135deg, var(--violet) 0%, #7c3aed 50%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 0.92rem;
+            color: var(--text-2);
+            line-height: 1.6;
+            max-width: 480px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* ── Hero image ──────────────────────────────────────────── */
+        .hero-image-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto 20px;
+        }
+        .hero-image-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(139,92,246,0.3), rgba(56,189,248,0.3));
+            filter: blur(16px);
+            opacity: 0.6;
+        }
+        .hero-image-frame {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .hero-image-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* ── CTA ─────────────────────────────────────────────────── */
+        .cta-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 22px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.87rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            letter-spacing: -0.2px;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+        }
+        .btn-cta-primary {
+            background: linear-gradient(135deg, var(--violet) 0%, #7c3aed 100%);
+            color: white;
+            box-shadow: 0 4px 24px rgba(99,102,241,0.45), 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .btn-cta-primary:hover {
+            box-shadow: 0 8px 32px rgba(99,102,241,0.6), 0 1px 3px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .btn-cta-ghost {
+            background: white;
+            color: var(--text-2);
+            border: 1px solid var(--border);
+        }
+        .btn-cta-ghost:hover {
+            background: var(--bg);
+            color: var(--text-1);
+            border-color: var(--text-3);
+        }
+        .btn-cta svg { flex-shrink: 0; }
+
+        /* ── Stats row ────────────────────────────────────────────── */
+        .stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-top: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .stat-item {
+            flex: 1;
+            padding: 14px 20px;
+            text-align: center;
+        }
+        .stat-item + .stat-item {
+            border-left: 1px solid var(--border);
+        }
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-1);
+            letter-spacing: -0.6px;
+            line-height: 1;
+        }
+        .stat-value.green { color: #059669; }
+        .stat-value.blue  { color: var(--violet); }
+        .stat-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        /* ── Footer ───────────────────────────────────────────────── */
+        footer {
+            padding: 24px 32px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-3);
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Responsive ───────────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .hero { padding: 32px 20px 20px; }
+            .hero-title { font-size: 1.9rem; letter-spacing: -1px; }
+            .hero-sub { font-size: 0.85rem; }
+            .stats-row { flex-direction: column; gap: 0; }
+            .stat-item + .stat-item { border-left: none; border-top: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+<main class="hero">
+    <div class="live-badge">
+        <div class="pulse-dot"></div>
+        Live Model
+    </div>
+
+    <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Machine Learning · Credit Card Security
+    </div>
+
+    <h1 class="hero-title">
+        Real-time <span class="accent">Fraud Detection</span><br>powered by ML
+    </h1>
+
+    <p class="hero-sub">
+        A Random Forest classifier trained on 284,807 real transactions.
+        Detects fraudulent activity with 99.99% accuracy and near-zero false positives.
+    </p>
+
+    <div class="hero-image-wrap">
+        <div class="hero-image-glow"></div>
+        <div class="hero-image-frame">
+            <img src="/static/hero.avif" alt="Credit card fraud detection dashboard preview">
+        </div>
+    </div>
+
+    <div class="cta-row">
+        <a href="/dashboard#demo" class="btn-cta btn-cta-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Try Live Demo
+        </a>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-item">
+            <div class="stat-value green">99.99%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value blue">284K</div>
+            <div class="stat-label">Transactions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">0 FP</div>
+            <div class="stat-label">False Positives</div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    FraudWatch &mdash; Random Forest Classifier &middot; Kaggle Credit Card Fraud Dataset
+</footer>
+
+</body>
+</html>

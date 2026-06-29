@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB) ![Flask](https://img.shields.io/badge/Flask-3.0-000000) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-F7931E) ![Plotly](https://img.shields.io/badge/Plotly-5.24-3F4F75) ![Render](https://img.shields.io/badge/Deploy-Render-46E3B7)
 
-**FraudWatch** is a full-stack machine learning application that detects fraudulent credit card transactions with **99.99% accuracy**. A scikit-learn Random Forest classifier — trained on 284,807 real-world transactions with `class_weight='balanced'` to handle extreme class imbalance — is served through a Flask REST API and paired with an interactive Plotly dashboard showing live predictions, a confusion matrix heatmap, and ranked feature importance charts. Every metric is computed on a stratified held-out test set so the numbers reflect true generalization, not training performance.
+**FraudWatch** is a full-stack machine learning application that detects fraudulent credit card transactions with **99.99% accuracy**. A scikit-learn Random Forest classifier — trained on 284,807 real-world transactions with `class_weight='balanced'` to handle extreme class imbalance — is served through a Flask REST API and paired with an interactive Plotly dashboard showing live predictions, a confusion matrix heatmap, and ranked feature importance charts. The app opens on a light-mode hero landing page that links through to the full dashboard. Every metric is computed on a stratified held-out test set so the numbers reflect true generalization, not training performance.
 
 ---
 
@@ -32,6 +32,10 @@ https://github.com/user-attachments/assets/f47355f8-5fc8-4263-bf0f-65a650807e83
 ---
 
 ## Features
+
+**Hero Landing Page**
+- **Light-mode landing page**: Full-viewport hero with a centered credit card image, animated "Live Model" badge, gradient title, and a "Try Live Demo" button linking to the dashboard
+- **Stats strip**: Three key figures — 99.99% accuracy, 284K transactions, 0 false positives — displayed in a clean card row beneath the CTA
 
 **Dashboard**
 - **Five metric cards**: Accuracy, Precision, Recall, F1-Score, and False Positive Rate at the top of the page — each color-coded with an SVG icon and a gradient bottom accent bar
@@ -101,8 +105,9 @@ RandomForestClassifier
 joblib.dump() → model.joblib + scaler.joblib
    │
    ▼
-Flask Dashboard + REST API
-  • /                   → interactive Plotly dashboard
+Flask App + REST API
+  • /                   → hero landing page
+  • /dashboard          → interactive Plotly dashboard
   • /random_transaction → synthetic test transaction
   • /predict            → real-time inference
 ```
@@ -134,7 +139,7 @@ Transactions made by European cardholders in September 2013 — 284,807 transact
 
 ### Backend
 - **Python 3.8+**: Core language
-- **Flask 3.0**: Lightweight web framework handling three routes (`/`, `/random_transaction`, `/predict`)
+- **Flask 3.0**: Lightweight web framework handling four routes (`/`, `/dashboard`, `/random_transaction`, `/predict`)
 - **Gunicorn**: WSGI server for production deployment on Render
 
 ### Visualization
@@ -162,8 +167,10 @@ FraudDetectionSystem/
 ├── requirements.txt    # Python dependencies
 ├── Procfile            # Gunicorn process definition for Render
 ├── templates/
+│   ├── hero.html       # Landing page — light-mode hero, image, CTA, stats strip
 │   └── index.html      # Dashboard — styles, chart containers, live demo, JS
 └── static/
+    ├── hero.avif       # Hero section credit card image
     └── background.jpg  # Static asset
 ```
 
@@ -202,7 +209,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3003](http://localhost:3003) in your browser — the hero landing page loads first, with a button linking through to the dashboard at `/dashboard`.
 
 > The pre-trained `model.joblib` and `scaler.joblib` are included in the repo — no dataset download required. The app generates synthetic transactions from scaler statistics for the dashboard table and live prediction demo.
 
