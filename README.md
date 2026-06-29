@@ -12,7 +12,11 @@ Note: The live app is hosted on Render's free tier, so the backend may take 1-2 
 
 ---
 
-https://github.com/user-attachments/assets/f47355f8-5fc8-4263-bf0f-65a650807e83
+
+
+https://github.com/user-attachments/assets/4a79b7f5-c1a3-4e64-be8e-6e3110d82146
+
+
 
 ---
 
@@ -156,6 +160,13 @@ Transactions made by European cardholders in September 2013 — 284,807 transact
 - **Git / GitHub**: Source hosting
 
 ---
+
+
+<img width="1470" height="798" alt="Screenshot 2026-06-29 at 7 04 41 PM" src="https://github.com/user-attachments/assets/0db472ca-c557-4195-a3c7-045ad2104ff1" />
+
+
+---
+
 
 ## Code Structure
 
