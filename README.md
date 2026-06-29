@@ -161,9 +161,11 @@ Transactions made by European cardholders in September 2013 — 284,807 transact
 
 ---
 
-
 <img width="1470" height="798" alt="Screenshot 2026-06-29 at 7 04 41 PM" src="https://github.com/user-attachments/assets/0db472ca-c557-4195-a3c7-045ad2104ff1" />
 
+---
+
+<img width="1470" height="799" alt="Screenshot 2026-06-29 at 7 18 57 PM" src="https://github.com/user-attachments/assets/5e4dede7-eb4d-4da0-8867-d69895b76bee" />
 
 ---
 
