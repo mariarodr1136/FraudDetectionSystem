@@ -221,6 +221,11 @@ def random_transaction():
     return jsonify({'features': features, 'true_label': int(fraud)})
 
 
+@app.route('/api/health')
+def health():
+    return jsonify({'status': 'ok'}), 200
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     payload = request.get_json()
